@@ -1,27 +1,27 @@
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
-local lol = Instance.new("ScreenGui")
-lol.Name = "lol"
-lol.Parent = player:WaitForChild("PlayerGui")
-lol.ResetOnSpawn = false
-lol.ResetOnSpawn = true
-lol.ZIndexBehavior = Enum.ZIndexBehavior.Global
-lol.DisplayOrder = 0
-lol.IgnoreGuiInset = false
-lol.Enabled = true
-lol.SelectionGroup = false
+local blue = Instance.new("ScreenGui")
+blue.Name = "blue"
+blue.Parent = player:WaitForChild("PlayerGui")
+blue.ResetOnSpawn = false
+blue.ResetOnSpawn = true
+blue.ZIndexBehavior = Enum.ZIndexBehavior.Global
+blue.DisplayOrder = 0
+blue.IgnoreGuiInset = false
+blue.Enabled = true
+blue.SelectionGroup = false
 
 local Frame = Instance.new("Frame")
 Frame.Name = "Frame"
-Frame.Parent = lol
-Frame.Size = UDim2.new(0, 260, 0, 250)
+Frame.Parent = blue
+Frame.Size = UDim2.new(0, 195, 0, 270)
 Frame.Position = UDim2.new(0, 0, 0, 0)
 Frame.AnchorPoint = Vector2.new(0, 0)
 Frame.Visible = true
 Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Frame.BackgroundTransparency = 0
-Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BorderColor3 = Color3.fromRGB(0, 0, 255)
 Frame.BorderSizePixel = 1
 Frame.ClipsDescendants = false
 Frame.LayoutOrder = 0
@@ -33,306 +33,645 @@ Frame.AutomaticSize = Enum.AutomaticSize.None
 Frame.Transparency = 0
 Frame.Rotation = 0
 Frame.Transparency = 0
+Frame.MouseButton1Down:connect(function()
 
-local night = Instance.new("TextButton")
-night.Name = "night"
-night.Parent = Frame
-night.Size = UDim2.new(0, 60, 0, 40)
-night.Position = UDim2.new(0, 90, 0, 50)
-night.AnchorPoint = Vector2.new(0, 0)
-night.Visible = true
-night.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-night.BackgroundTransparency = 0
-night.BorderColor3 = Color3.fromRGB(0, 0, 0)
-night.BorderSizePixel = 1
-night.ClipsDescendants = false
-night.LayoutOrder = 0
-night.Selectable = true
-night.SelectionGroup = false
-night.SizeConstraint = Enum.SizeConstraint.RelativeXY
-night.Rotation = 0
-night.AutomaticSize = Enum.AutomaticSize.None
-night.Font = Enum.Font.ArialBold
-night.Text = "night"
-night.TextColor3 = Color3.fromRGB(0, 0, 0)
-night.TextSize = 14
-night.TextScaled = false
-night.TextWrapped = false
-night.TextXAlignment = Enum.TextXAlignment.Center
-night.TextYAlignment = Enum.TextYAlignment.Center
-night.TextTransparency = 0
-night.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-night.TextStrokeTransparency = 1
-night.LineHeight = 1
-night.RichText = false
-night.TextTruncate = Enum.TextTruncate.None
-night.MaxVisibleGraphemes = -1
-night.Transparency = 0
-night.Rotation = 0
-night.Transparency = 0
+local function dragify(Main)
+    if not Main then return error("Invalid Main object provided to dragify") end --Error handling
+        
+        local dragToggle = false
+        local dragSpeed = 0.95 
+        local dragInput = nil
+        local initialDragPosition = nil
+        local initialPosition = nil
+        
+        local function updateInput(input)
+            local delta = input.Position - initialDragPosition
+            local newPosition = UDim2.new(initialPosition.X.Scale, initialPosition.X.Offset + delta.X * dragSpeed, initialPosition.Y.Scale, initialPosition.Y.Offset + delta.Y * dragSpeed)
+            game:GetService("TweenService"):Create(Main, TweenInfo.new(0.15, Enum.EasingStyle.Linear), {Position = newPosition}):Play() --Adjusted Tween time and easing
+        end
+        
+        Main.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                dragToggle = true
+                initialDragPosition = input.Position
+                initialPosition = Main.Position
+                input.Changed:Connect(function()
+                    if input.UserInputState == Enum.UserInputState.End then
+                        dragToggle = false
+                    end
+                end)
+            end
+        end)
+        
+        Main.InputChanged:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+                dragInput = input
+            end
+        end)
+        
+        game:GetService("UserInputService").InputChanged:Connect(function(input)
+            if input == dragInput and dragToggle then
+                updateInput(input)
+            end
+        end)
+    end
+    
+    dragify(script.Parent)
 
-local hint = Instance.new("TextButton")
-hint.Name = "hint"
-hint.Parent = Frame
-hint.Size = UDim2.new(0, 60, 0, 40)
-hint.Position = UDim2.new(0, 11, 0, 50)
-hint.AnchorPoint = Vector2.new(0, 0)
-hint.Visible = true
-hint.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-hint.BackgroundTransparency = 0
-hint.BorderColor3 = Color3.fromRGB(0, 0, 0)
-hint.BorderSizePixel = 1
-hint.ClipsDescendants = false
-hint.LayoutOrder = 0
-hint.Selectable = true
-hint.SelectionGroup = false
-hint.SizeConstraint = Enum.SizeConstraint.RelativeXY
-hint.Rotation = 0
-hint.AutomaticSize = Enum.AutomaticSize.None
-hint.Font = Enum.Font.ArialBold
-hint.Text = "hint"
-hint.TextColor3 = Color3.fromRGB(0, 0, 0)
-hint.TextSize = 14
-hint.TextScaled = false
-hint.TextWrapped = false
-hint.TextXAlignment = Enum.TextXAlignment.Center
-hint.TextYAlignment = Enum.TextYAlignment.Center
-hint.TextTransparency = 0
-hint.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-hint.TextStrokeTransparency = 1
-hint.LineHeight = 1
-hint.RichText = false
-hint.TextTruncate = Enum.TextTruncate.None
-hint.MaxVisibleGraphemes = -1
-hint.Transparency = 0
-hint.Rotation = 0
-hint.Transparency = 0
 
-local Frame2 = Instance.new("Frame")
-Frame2.Name = "Frame2"
-Frame2.Parent = Frame
-Frame2.Size = UDim2.new(0, 260, 0, 35)
-Frame2.Position = UDim2.new(0, 0, 0, 215)
-Frame2.AnchorPoint = Vector2.new(0, 0)
-Frame2.Visible = true
-Frame2.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-Frame2.BackgroundTransparency = 0
-Frame2.BorderColor3 = Color3.fromRGB(255, 0, 0)
-Frame2.BorderSizePixel = 1
-Frame2.ClipsDescendants = false
-Frame2.LayoutOrder = 0
-Frame2.Selectable = false
-Frame2.SelectionGroup = false
-Frame2.SizeConstraint = Enum.SizeConstraint.RelativeXY
-Frame2.Rotation = 0
-Frame2.AutomaticSize = Enum.AutomaticSize.None
-Frame2.Transparency = 0
-Frame2.Rotation = 0
-Frame2.Transparency = 0
+local TextButton4 = Instance.new("TextButton")
+TextButton4.Name = "TextButton4"
+TextButton4.Parent = Frame
+TextButton4.Size = UDim2.new(0, 50, 0, 40)
+TextButton4.Position = UDim2.new(0, 130, 0, 100)
+TextButton4.AnchorPoint = Vector2.new(0, 0)
+TextButton4.Visible = true
+TextButton4.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TextButton4.BackgroundTransparency = 0
+TextButton4.BorderColor3 = Color3.fromRGB(0, 0, 255)
+TextButton4.BorderSizePixel = 1
+TextButton4.ClipsDescendants = false
+TextButton4.LayoutOrder = 0
+TextButton4.Selectable = true
+TextButton4.SelectionGroup = false
+TextButton4.SizeConstraint = Enum.SizeConstraint.RelativeXY
+TextButton4.Rotation = 0
+TextButton4.AutomaticSize = Enum.AutomaticSize.None
+TextButton4.Font = Enum.Font.Legacy
+TextButton4.Text = "rain ball"
+TextButton4.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton4.TextSize = 8
+TextButton4.TextScaled = false
+TextButton4.TextWrapped = false
+TextButton4.TextXAlignment = Enum.TextXAlignment.Center
+TextButton4.TextYAlignment = Enum.TextYAlignment.Center
+TextButton4.TextTransparency = 0
+TextButton4.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+TextButton4.TextStrokeTransparency = 1
+TextButton4.LineHeight = 1
+TextButton4.RichText = false
+TextButton4.TextTruncate = Enum.TextTruncate.None
+TextButton4.MaxVisibleGraphemes = -1
+TextButton4.Transparency = 0
+TextButton4.Rotation = 0
+TextButton4.Transparency = 0
+TextButton4.MouseButton1Down:connect(function()
 
-local disco = Instance.new("TextButton")
-disco.Name = "disco"
-disco.Parent = Frame
-disco.Size = UDim2.new(0, 60, 0, 40)
-disco.Position = UDim2.new(0, 175, 0, 50)
-disco.AnchorPoint = Vector2.new(0, 0)
-disco.Visible = true
-disco.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-disco.BackgroundTransparency = 0
-disco.BorderColor3 = Color3.fromRGB(0, 0, 0)
-disco.BorderSizePixel = 1
-disco.ClipsDescendants = false
-disco.LayoutOrder = 0
-disco.Selectable = true
-disco.SelectionGroup = false
-disco.SizeConstraint = Enum.SizeConstraint.RelativeXY
-disco.Rotation = 0
-disco.AutomaticSize = Enum.AutomaticSize.None
-disco.Font = Enum.Font.ArialBold
-disco.Text = "disco"
-disco.TextColor3 = Color3.fromRGB(0, 0, 0)
-disco.TextSize = 14
-disco.TextScaled = false
-disco.TextWrapped = false
-disco.TextXAlignment = Enum.TextXAlignment.Center
-disco.TextYAlignment = Enum.TextYAlignment.Center
-disco.TextTransparency = 0
-disco.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-disco.TextStrokeTransparency = 1
-disco.LineHeight = 1
-disco.RichText = false
-disco.TextTruncate = Enum.TextTruncate.None
-disco.MaxVisibleGraphemes = -1
-disco.Transparency = 0
-disco.Rotation = 0
-disco.Transparency = 0
 
-local 1x1x1x1 hint = Instance.new("TextButton")
-1x1x1x1 hint.Name = "1x1x1x1 hint"
-1x1x1x1 hint.Parent = Frame
-1x1x1x1 hint.Size = UDim2.new(0, 60, 0, 40)
-1x1x1x1 hint.Position = UDim2.new(0, 175, 0, 105)
-1x1x1x1 hint.AnchorPoint = Vector2.new(0, 0)
-1x1x1x1 hint.Visible = true
-1x1x1x1 hint.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-1x1x1x1 hint.BackgroundTransparency = 0
-1x1x1x1 hint.BorderColor3 = Color3.fromRGB(0, 0, 0)
-1x1x1x1 hint.BorderSizePixel = 1
-1x1x1x1 hint.ClipsDescendants = false
-1x1x1x1 hint.LayoutOrder = 0
-1x1x1x1 hint.Selectable = true
-1x1x1x1 hint.SelectionGroup = false
-1x1x1x1 hint.SizeConstraint = Enum.SizeConstraint.RelativeXY
-1x1x1x1 hint.Rotation = 0
-1x1x1x1 hint.AutomaticSize = Enum.AutomaticSize.None
-1x1x1x1 hint.Font = Enum.Font.ArialBold
-1x1x1x1 hint.Text = "1x1x1x1 hint"
-1x1x1x1 hint.TextColor3 = Color3.fromRGB(0, 0, 0)
-1x1x1x1 hint.TextSize = 11
-1x1x1x1 hint.TextScaled = false
-1x1x1x1 hint.TextWrapped = false
-1x1x1x1 hint.TextXAlignment = Enum.TextXAlignment.Center
-1x1x1x1 hint.TextYAlignment = Enum.TextYAlignment.Center
-1x1x1x1 hint.TextTransparency = 0
-1x1x1x1 hint.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-1x1x1x1 hint.TextStrokeTransparency = 1
-1x1x1x1 hint.LineHeight = 1
-1x1x1x1 hint.RichText = false
-1x1x1x1 hint.TextTruncate = Enum.TextTruncate.None
-1x1x1x1 hint.MaxVisibleGraphemes = -1
-1x1x1x1 hint.Transparency = 0
-1x1x1x1 hint.Rotation = 0
-1x1x1x1 hint.Transparency = 0
 
-local 666 = Instance.new("TextButton")
-666.Name = "666"
-666.Parent = Frame
-666.Size = UDim2.new(0, 60, 0, 40)
-666.Position = UDim2.new(0, 90, 0, 105)
-666.AnchorPoint = Vector2.new(0, 0)
-666.Visible = true
-666.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-666.BackgroundTransparency = 0
-666.BorderColor3 = Color3.fromRGB(0, 0, 0)
-666.BorderSizePixel = 1
-666.ClipsDescendants = false
-666.LayoutOrder = 0
-666.Selectable = true
-666.SelectionGroup = false
-666.SizeConstraint = Enum.SizeConstraint.RelativeXY
-666.Rotation = 0
-666.AutomaticSize = Enum.AutomaticSize.None
-666.Font = Enum.Font.ArialBold
-666.Text = "666"
-666.TextColor3 = Color3.fromRGB(0, 0, 0)
-666.TextSize = 14
-666.TextScaled = false
-666.TextWrapped = false
-666.TextXAlignment = Enum.TextXAlignment.Center
-666.TextYAlignment = Enum.TextYAlignment.Center
-666.TextTransparency = 0
-666.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-666.TextStrokeTransparency = 1
-666.LineHeight = 1
-666.RichText = false
-666.TextTruncate = Enum.TextTruncate.None
-666.MaxVisibleGraphemes = -1
-666.Transparency = 0
-666.Rotation = 0
-666.Transparency = 0
+local TextButton5 = Instance.new("TextButton")
+TextButton5.Name = "TextButton5"
+TextButton5.Parent = Frame
+TextButton5.Size = UDim2.new(0, 50, 0, 40)
+TextButton5.Position = UDim2.new(0, 130, 0, 205)
+TextButton5.AnchorPoint = Vector2.new(0, 0)
+TextButton5.Visible = true
+TextButton5.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TextButton5.BackgroundTransparency = 0
+TextButton5.BorderColor3 = Color3.fromRGB(0, 0, 255)
+TextButton5.BorderSizePixel = 1
+TextButton5.ClipsDescendants = false
+TextButton5.LayoutOrder = 0
+TextButton5.Selectable = true
+TextButton5.SelectionGroup = false
+TextButton5.SizeConstraint = Enum.SizeConstraint.RelativeXY
+TextButton5.Rotation = 0
+TextButton5.AutomaticSize = Enum.AutomaticSize.None
+TextButton5.Font = Enum.Font.Legacy
+TextButton5.Text = "message"
+TextButton5.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton5.TextSize = 8
+TextButton5.TextScaled = false
+TextButton5.TextWrapped = false
+TextButton5.TextXAlignment = Enum.TextXAlignment.Center
+TextButton5.TextYAlignment = Enum.TextYAlignment.Center
+TextButton5.TextTransparency = 0
+TextButton5.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+TextButton5.TextStrokeTransparency = 1
+TextButton5.LineHeight = 1
+TextButton5.RichText = false
+TextButton5.TextTruncate = Enum.TextTruncate.None
+TextButton5.MaxVisibleGraphemes = -1
+TextButton5.Transparency = 0
+TextButton5.Rotation = 0
+TextButton5.Transparency = 0
+TextButton5.MouseButton1Down:connect(function()
 
-local Frame = Instance.new("Frame")
-Frame.Name = "Frame"
-Frame.Parent = Frame
-Frame.Size = UDim2.new(0, 260, 0, 35)
-Frame.Position = UDim2.new(0, 0, 0, 0)
-Frame.AnchorPoint = Vector2.new(0, 0)
-Frame.Visible = true
-Frame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-Frame.BackgroundTransparency = 0
-Frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-Frame.BorderSizePixel = 1
-Frame.ClipsDescendants = false
-Frame.LayoutOrder = 0
-Frame.Selectable = false
-Frame.SelectionGroup = false
-Frame.SizeConstraint = Enum.SizeConstraint.RelativeXY
-Frame.Rotation = 0
-Frame.AutomaticSize = Enum.AutomaticSize.None
-Frame.Transparency = 0
-Frame.Rotation = 0
-Frame.Transparency = 0
+local button = script.Parent
+ 
+button.MouseButton1Click:Connect(function()
+    local message = Instance.new("Message", workspace)
+    message.Text = "blue8x9x10x11"
+    game:GetService("Debris"):AddItem(message, 5) -- Use Debris for cleaner removal
+end)
 
-local blux8x9x10x11 gui by 1x1x1x1 = Instance.new("TextLabel")
-blux8x9x10x11 gui by 1x1x1x1.Name = "blux8x9x10x11 gui by 1x1x1x1"
-blux8x9x10x11 gui by 1x1x1x1.Parent = Frame
-blux8x9x10x11 gui by 1x1x1x1.Size = UDim2.new(0, 200, 0, 35)
-blux8x9x10x11 gui by 1x1x1x1.Position = UDim2.new(0, 30, 0, 0)
-blux8x9x10x11 gui by 1x1x1x1.AnchorPoint = Vector2.new(0, 0)
-blux8x9x10x11 gui by 1x1x1x1.Visible = true
-blux8x9x10x11 gui by 1x1x1x1.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-blux8x9x10x11 gui by 1x1x1x1.BackgroundTransparency = 0
-blux8x9x10x11 gui by 1x1x1x1.BorderColor3 = Color3.fromRGB(255, 0, 0)
-blux8x9x10x11 gui by 1x1x1x1.BorderSizePixel = 1
-blux8x9x10x11 gui by 1x1x1x1.ClipsDescendants = false
-blux8x9x10x11 gui by 1x1x1x1.LayoutOrder = 0
-blux8x9x10x11 gui by 1x1x1x1.Selectable = false
-blux8x9x10x11 gui by 1x1x1x1.SelectionGroup = false
-blux8x9x10x11 gui by 1x1x1x1.SizeConstraint = Enum.SizeConstraint.RelativeXY
-blux8x9x10x11 gui by 1x1x1x1.Rotation = 0
-blux8x9x10x11 gui by 1x1x1x1.AutomaticSize = Enum.AutomaticSize.None
-blux8x9x10x11 gui by 1x1x1x1.Font = Enum.Font.Arcade
-blux8x9x10x11 gui by 1x1x1x1.Text = "blue8x9x10x11 gui by 1x1x1x1"
-blux8x9x10x11 gui by 1x1x1x1.TextColor3 = Color3.fromRGB(0, 0, 0)
-blux8x9x10x11 gui by 1x1x1x1.TextSize = 14
-blux8x9x10x11 gui by 1x1x1x1.TextScaled = false
-blux8x9x10x11 gui by 1x1x1x1.TextWrapped = false
-blux8x9x10x11 gui by 1x1x1x1.TextXAlignment = Enum.TextXAlignment.Center
-blux8x9x10x11 gui by 1x1x1x1.TextYAlignment = Enum.TextYAlignment.Center
-blux8x9x10x11 gui by 1x1x1x1.TextTransparency = 0
-blux8x9x10x11 gui by 1x1x1x1.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-blux8x9x10x11 gui by 1x1x1x1.TextStrokeTransparency = 1
-blux8x9x10x11 gui by 1x1x1x1.LineHeight = 1
-blux8x9x10x11 gui by 1x1x1x1.RichText = false
-blux8x9x10x11 gui by 1x1x1x1.TextTruncate = Enum.TextTruncate.None
-blux8x9x10x11 gui by 1x1x1x1.MaxVisibleGraphemes = -1
-blux8x9x10x11 gui by 1x1x1x1.Transparency = 0
-blux8x9x10x11 gui by 1x1x1x1.Rotation = 0
-blux8x9x10x11 gui by 1x1x1x1.Transparency = 0
 
-local sound = Instance.new("TextButton")
-sound.Name = "sound"
-sound.Parent = Frame
-sound.Size = UDim2.new(0, 60, 0, 40)
-sound.Position = UDim2.new(0, 11, 0, 105)
-sound.AnchorPoint = Vector2.new(0, 0)
-sound.Visible = true
-sound.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-sound.BackgroundTransparency = 0
-sound.BorderColor3 = Color3.fromRGB(0, 0, 0)
-sound.BorderSizePixel = 1
-sound.ClipsDescendants = false
-sound.LayoutOrder = 0
-sound.Selectable = true
-sound.SelectionGroup = false
-sound.SizeConstraint = Enum.SizeConstraint.RelativeXY
-sound.Rotation = 0
-sound.AutomaticSize = Enum.AutomaticSize.None
-sound.Font = Enum.Font.ArialBold
-sound.Text = "sound"
-sound.TextColor3 = Color3.fromRGB(0, 0, 0)
-sound.TextSize = 14
-sound.TextScaled = false
-sound.TextWrapped = false
-sound.TextXAlignment = Enum.TextXAlignment.Center
-sound.TextYAlignment = Enum.TextYAlignment.Center
-sound.TextTransparency = 0
-sound.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-sound.TextStrokeTransparency = 1
-sound.LineHeight = 1
-sound.RichText = false
-sound.TextTruncate = Enum.TextTruncate.None
-sound.MaxVisibleGraphemes = -1
-sound.Transparency = 0
-sound.Rotation = 0
-sound.Transparency = 0
+local TextButton6 = Instance.new("TextButton")
+TextButton6.Name = "TextButton6"
+TextButton6.Parent = Frame
+TextButton6.Size = UDim2.new(0, 50, 0, 40)
+TextButton6.Position = UDim2.new(0, 130, 0, 151)
+TextButton6.AnchorPoint = Vector2.new(0, 0)
+TextButton6.Visible = true
+TextButton6.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TextButton6.BackgroundTransparency = 0
+TextButton6.BorderColor3 = Color3.fromRGB(0, 0, 255)
+TextButton6.BorderSizePixel = 1
+TextButton6.ClipsDescendants = false
+TextButton6.LayoutOrder = 0
+TextButton6.Selectable = true
+TextButton6.SelectionGroup = false
+TextButton6.SizeConstraint = Enum.SizeConstraint.RelativeXY
+TextButton6.Rotation = 0
+TextButton6.AutomaticSize = Enum.AutomaticSize.None
+TextButton6.Font = Enum.Font.Legacy
+TextButton6.Text = "skybox"
+TextButton6.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton6.TextSize = 8
+TextButton6.TextScaled = false
+TextButton6.TextWrapped = false
+TextButton6.TextXAlignment = Enum.TextXAlignment.Center
+TextButton6.TextYAlignment = Enum.TextYAlignment.Center
+TextButton6.TextTransparency = 0
+TextButton6.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+TextButton6.TextStrokeTransparency = 1
+TextButton6.LineHeight = 1
+TextButton6.RichText = false
+TextButton6.TextTruncate = Enum.TextTruncate.None
+TextButton6.MaxVisibleGraphemes = -1
+TextButton6.Transparency = 0
+TextButton6.Rotation = 0
+TextButton6.Transparency = 0
+TextButton6.MouseButton1Down:connect(function()
+
+local button = script.Parent
+local skyService = game:GetService("Lighting")
+
+local skyboxAssetIds = {
+"84225092336911", -- Replace with your first skybox Asset ID
+"84225092336911", -- Replace with your second skybox Asset ID
+"84225092336911"  -- Replace with your third skybox Asset ID (and so on)
+}
+local currentSkyboxIndex = 1
+
+button.MouseButton1Click:Connect(function()
+    local newSkyboxAssetId = skyboxAssetIds[currentSkyboxIndex]
+    local skybox = Instance.new("Sky")
+    skybox.Parent = skyService
+    skybox.SkyboxBk = "rbxassetid://" .. newSkyboxAssetId
+    skybox.SkyboxDn = "rbxassetid://" .. newSkyboxAssetId
+    skybox.SkyboxFt = "rbxassetid://" .. newSkyboxAssetId
+    skybox.SkyboxLf = "rbxassetid://" .. newSkyboxAssetId
+    skybox.SkyboxRt = "rbxassetid://" .. newSkyboxAssetId
+    skybox.SkyboxUp = "rbxassetid://" .. newSkyboxAssetId
+    currentSkyboxIndex = currentSkyboxIndex + 1
+    if currentSkyboxIndex > #skyboxAssetIds then
+        currentSkyboxIndex = 1
+    end
+end)
+
+
+local TextButton5 = Instance.new("TextButton")
+TextButton5.Name = "TextButton5"
+TextButton5.Parent = Frame
+TextButton5.Size = UDim2.new(0, 50, 0, 40)
+TextButton5.Position = UDim2.new(0, 10, 0, 205)
+TextButton5.AnchorPoint = Vector2.new(0, 0)
+TextButton5.Visible = true
+TextButton5.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TextButton5.BackgroundTransparency = 0
+TextButton5.BorderColor3 = Color3.fromRGB(0, 0, 255)
+TextButton5.BorderSizePixel = 1
+TextButton5.ClipsDescendants = false
+TextButton5.LayoutOrder = 0
+TextButton5.Selectable = true
+TextButton5.SelectionGroup = false
+TextButton5.SizeConstraint = Enum.SizeConstraint.RelativeXY
+TextButton5.Rotation = 0
+TextButton5.AutomaticSize = Enum.AutomaticSize.None
+TextButton5.Font = Enum.Font.Legacy
+TextButton5.Text = "666"
+TextButton5.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton5.TextSize = 8
+TextButton5.TextScaled = false
+TextButton5.TextWrapped = false
+TextButton5.TextXAlignment = Enum.TextXAlignment.Center
+TextButton5.TextYAlignment = Enum.TextYAlignment.Center
+TextButton5.TextTransparency = 0
+TextButton5.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+TextButton5.TextStrokeTransparency = 1
+TextButton5.LineHeight = 1
+TextButton5.RichText = false
+TextButton5.TextTruncate = Enum.TextTruncate.None
+TextButton5.MaxVisibleGraphemes = -1
+TextButton5.Transparency = 0
+TextButton5.Rotation = 0
+TextButton5.Transparency = 0
+TextButton5.MouseButton1Down:connect(function()
+
+local button = script.Parent -- Assuming the script is a child of the button.
+
+local function applyChanges()
+    local function addBillboard(part)
+        local bbg = Instance.new("BillboardGui", part)
+        bbg.Name = "stuf"
+        bbg.Adornee = part
+        bbg.Size = UDim2.new(2.5, 0, 2.5, 0)
+        
+        local tlb = Instance.new("TextLabel", bbg)
+        tlb.Text = "team blue8x9x10x11 join today hahaahahaa"
+        tlb.Font = Enum.Font.SourceSansBold
+        tlb.TextSize = 48
+        tlb.TextColor3 = Color3.new(1, 0, 0)
+        tlb.Size = UDim2.new(1.25, 0, 1.25, 0)
+        tlb.Position = UDim2.new(-0.125, -22, -1.1, 0)
+        tlb.BackgroundTransparency = 1
+    end
+    
+    local function applyEffects(part)
+        part.BrickColor = BrickColor.new("Really black")
+        part.TopSurface = Enum.SurfaceType.Smooth
+        part.BottomSurface = Enum.SurfaceType.Smooth
+        local s = Instance.new("SelectionBox", part)
+        s.Adornee = part
+        s.Color = BrickColor.new("Really red")
+        local a = Instance.new("PointLight", part)
+        a.Color = Color3.new(1, 0, 0)
+        a.Range = 15
+        a.Brightness = 5
+        local f = Instance.new("Fire", part)
+        f.Size = 19
+        f.Heat = 22
+    end
+    
+    local function modifyLighting()
+        game.Lighting.TimeOfDay = 0
+        game.Lighting.Brightness = 0
+        game.Lighting.ShadowColor = Color3.new(0, 0, 0)
+        game.Lighting.Ambient = Color3.new(1, 0, 0)
+        game.Lighting.FogEnd = 200
+        game.Lighting.FogColor = Color3.new(0, 0, 0)
+    end
+    
+    local function recursiveApplication(object)
+        for _, child in pairs(object:GetChildren()) do
+            if child:IsA("BasePart") then
+                addBillboard(child)
+                applyEffects(child)
+            end
+            recursiveApplication(child)
+        end
+    end
+    
+    recursiveApplication(game.Workspace)
+    modifyLighting()
+end
+
+
+button.MouseButton1Click:Connect(applyChanges)
+
+
+
+local TextButton3 = Instance.new("TextButton")
+TextButton3.Name = "TextButton3"
+TextButton3.Parent = Frame
+TextButton3.Size = UDim2.new(0, 50, 0, 40)
+TextButton3.Position = UDim2.new(0, 10, 0, 100)
+TextButton3.AnchorPoint = Vector2.new(0, 0)
+TextButton3.Visible = true
+TextButton3.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TextButton3.BackgroundTransparency = 0
+TextButton3.BorderColor3 = Color3.fromRGB(0, 0, 255)
+TextButton3.BorderSizePixel = 1
+TextButton3.ClipsDescendants = false
+TextButton3.LayoutOrder = 0
+TextButton3.Selectable = true
+TextButton3.SelectionGroup = false
+TextButton3.SizeConstraint = Enum.SizeConstraint.RelativeXY
+TextButton3.Rotation = 0
+TextButton3.AutomaticSize = Enum.AutomaticSize.None
+TextButton3.Font = Enum.Font.Legacy
+TextButton3.Text = "blue jums"
+TextButton3.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton3.TextSize = 8
+TextButton3.TextScaled = false
+TextButton3.TextWrapped = false
+TextButton3.TextXAlignment = Enum.TextXAlignment.Center
+TextButton3.TextYAlignment = Enum.TextYAlignment.Center
+TextButton3.TextTransparency = 0
+TextButton3.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+TextButton3.TextStrokeTransparency = 1
+TextButton3.LineHeight = 1
+TextButton3.RichText = false
+TextButton3.TextTruncate = Enum.TextTruncate.None
+TextButton3.MaxVisibleGraphemes = -1
+TextButton3.Transparency = 0
+TextButton3.Rotation = 0
+TextButton3.Transparency = 0
+TextButton3.MouseButton1Down:connect(function()
+
+local button = script.Parent
+local surpriseImage = "rbxassetid://84225092336911" -- Replace with your image Asset ID
+local surpriseSound = "rbxassetid://6018028320" -- Replace with your sound Asset ID
+local maxJumpScares = 5 -- Set the maximum number of jump scares allowed
+
+local jumpScareCount = 0
+
+local function activateSurprise()
+    if jumpScareCount < maxJumpScares then
+        jumpScareCount = jumpScareCount + 1
+        
+        local success, errorMsg = pcall(function()
+            local screenGui = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+            local imageLabel = Instance.new("ImageLabel", screenGui)
+            imageLabel.Image = surpriseImage
+            imageLabel.Size = UDim2.new(1, 0, 1, 0)
+            imageLabel.Visible = false
+            
+            local sound = Instance.new("Sound", screenGui)
+            sound.SoundId = surpriseSound
+            sound.Volume = 3
+            sound.Playing = true
+            game.Debris:AddItem(sound, 9)
+            
+            imageLabel.Visible = true
+            wait(9)
+            imageLabel.Visible = false
+            game.Debris:AddItem(screenGui, 0.1)
+        end)
+        
+        if not success then
+            warn("Error activating surprise:", errorMsg)
+        end
+    else
+        print("Maximum number of jump scares reached!")
+    end
+end
+
+button.MouseButton1Click:Connect(activateSurprise)
+
+
+
+local TextLabel = Instance.new("TextLabel")
+TextLabel.Name = "TextLabel"
+TextLabel.Parent = Frame
+TextLabel.Size = UDim2.new(0, 193, 0, 30)
+TextLabel.Position = UDim2.new(0, 0, 0, 0)
+TextLabel.AnchorPoint = Vector2.new(0, 0)
+TextLabel.Visible = true
+TextLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.BackgroundTransparency = 0
+TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 255)
+TextLabel.BorderSizePixel = 1
+TextLabel.ClipsDescendants = false
+TextLabel.LayoutOrder = 0
+TextLabel.Selectable = false
+TextLabel.SelectionGroup = false
+TextLabel.SizeConstraint = Enum.SizeConstraint.RelativeXY
+TextLabel.Rotation = 0
+TextLabel.AutomaticSize = Enum.AutomaticSize.None
+TextLabel.Font = Enum.Font.Legacy
+TextLabel.Text = "blue v2 gui"
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextSize = 8
+TextLabel.TextScaled = false
+TextLabel.TextWrapped = false
+TextLabel.TextXAlignment = Enum.TextXAlignment.Center
+TextLabel.TextYAlignment = Enum.TextYAlignment.Center
+TextLabel.TextTransparency = 0
+TextLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.TextStrokeTransparency = 1
+TextLabel.LineHeight = 1
+TextLabel.RichText = false
+TextLabel.TextTruncate = Enum.TextTruncate.None
+TextLabel.MaxVisibleGraphemes = -1
+TextLabel.Transparency = 0
+TextLabel.Rotation = 0
+TextLabel.Transparency = 0
+
+local TextButton = Instance.new("TextButton")
+TextButton.Name = "TextButton"
+TextButton.Parent = Frame
+TextButton.Size = UDim2.new(0, 50, 0, 40)
+TextButton.Position = UDim2.new(0, 10, 0, 50)
+TextButton.AnchorPoint = Vector2.new(0, 0)
+TextButton.Visible = true
+TextButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TextButton.BackgroundTransparency = 0
+TextButton.BorderColor3 = Color3.fromRGB(0, 0, 255)
+TextButton.BorderSizePixel = 1
+TextButton.ClipsDescendants = false
+TextButton.LayoutOrder = 0
+TextButton.Selectable = true
+TextButton.SelectionGroup = false
+TextButton.SizeConstraint = Enum.SizeConstraint.RelativeXY
+TextButton.Rotation = 0
+TextButton.AutomaticSize = Enum.AutomaticSize.None
+TextButton.Font = Enum.Font.Legacy
+TextButton.Text = "disco"
+TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton.TextSize = 8
+TextButton.TextScaled = false
+TextButton.TextWrapped = false
+TextButton.TextXAlignment = Enum.TextXAlignment.Center
+TextButton.TextYAlignment = Enum.TextYAlignment.Center
+TextButton.TextTransparency = 0
+TextButton.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+TextButton.TextStrokeTransparency = 1
+TextButton.LineHeight = 1
+TextButton.RichText = false
+TextButton.TextTruncate = Enum.TextTruncate.None
+TextButton.MaxVisibleGraphemes = -1
+TextButton.Transparency = 0
+TextButton.Rotation = 0
+TextButton.Transparency = 0
+TextButton.MouseButton1Down:connect(function()
+
+local disco = script.Parent -- Assuming the script is a child of the button
+
+local Lighting = game:GetService("Lighting")
+local ColorCorrection = nil -- Initialize ColorCorrection outside the function
+    
+    local function zigzag(X) 
+        return math.acos(math.cos(X*math.pi))/math.pi
+    end
+    
+    local function startDisco()
+        if ColorCorrection then
+            return -- Already running
+        end
+        ColorCorrection = Instance.new("ColorCorrectionEffect", Lighting)
+        Lighting.TimeOfDay = "12:00"
+        local Counter = 0
+        local connection = game:GetService("RunService").Heartbeat:Connect(function()
+            ColorCorrection.TintColor = Color3.fromHSV(zigzag(Counter),1,1)
+            Lighting.Ambient = Color3.fromHSV(zigzag(Counter),1,1)
+            Counter += 0.01
+        end)
+        
+        -- Add a way to stop the effect
+        disco.MouseButton1Click:Connect(function()
+            connection:Disconnect()
+            ColorCorrection:Destroy()
+            ColorCorrection = nil
+        end)
+    end
+    
+    
+    disco.MouseButton1Click:Connect(startDisco)
+    
+
+
+local TextButton5 = Instance.new("TextButton")
+TextButton5.Name = "TextButton5"
+TextButton5.Parent = Frame
+TextButton5.Size = UDim2.new(0, 50, 0, 40)
+TextButton5.Position = UDim2.new(0, 10, 0, 151)
+TextButton5.AnchorPoint = Vector2.new(0, 0)
+TextButton5.Visible = true
+TextButton5.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TextButton5.BackgroundTransparency = 0
+TextButton5.BorderColor3 = Color3.fromRGB(0, 0, 255)
+TextButton5.BorderSizePixel = 1
+TextButton5.ClipsDescendants = false
+TextButton5.LayoutOrder = 0
+TextButton5.Selectable = true
+TextButton5.SelectionGroup = false
+TextButton5.SizeConstraint = Enum.SizeConstraint.RelativeXY
+TextButton5.Rotation = 0
+TextButton5.AutomaticSize = Enum.AutomaticSize.None
+TextButton5.Font = Enum.Font.Legacy
+TextButton5.Text = "particles"
+TextButton5.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton5.TextSize = 8
+TextButton5.TextScaled = false
+TextButton5.TextWrapped = false
+TextButton5.TextXAlignment = Enum.TextXAlignment.Center
+TextButton5.TextYAlignment = Enum.TextYAlignment.Center
+TextButton5.TextTransparency = 0
+TextButton5.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+TextButton5.TextStrokeTransparency = 1
+TextButton5.LineHeight = 1
+TextButton5.RichText = false
+TextButton5.TextTruncate = Enum.TextTruncate.None
+TextButton5.MaxVisibleGraphemes = -1
+TextButton5.Transparency = 0
+TextButton5.Rotation = 0
+TextButton5.Transparency = 0
+TextButton5.MouseButton1Down:connect(function()
+
+local button = script.Parent --Make sure the script is inside a TextButton object.
+local RunService = game:GetService("RunService")
+local particleTexture = "http://www.roblox.com/asset/?id=84225092336911" --Pre-load the particle texture
+
+local function addParticleEmitters(targetArea)
+    for _, v in pairs(targetArea:GetDescendants()) do
+        if v:IsA("BasePart") then --Only add to BaseParts
+            local emit = Instance.new("ParticleEmitter")
+            emit.Parent = v
+            emit.Texture = particleTexture
+            emit.VelocitySpread = 999999999
+            emit.Lifetime = NumberRange.new(1,2) -- Added to make particles disappear after a while
+            emit.Rate = 9999999999 -- Added to control rate of particle emission
+        end
+    end
+end
+
+local function removeParticleEmitters(targetArea)
+    for _, v in pairs(targetArea:GetDescendants()) do
+        if v:IsA("ParticleEmitter") then
+            v:Destroy()
+        end
+    end
+end
+
+
+button.MouseButton1Click:Connect(function()
+    local targetArea = workspace --Choose area to add particles to
+    addParticleEmitters(targetArea)
+end)
+
+
+
+local TextButton2 = Instance.new("TextButton")
+TextButton2.Name = "TextButton2"
+TextButton2.Parent = Frame
+TextButton2.Size = UDim2.new(0, 50, 0, 40)
+TextButton2.Position = UDim2.new(0, 130, 0, 50)
+TextButton2.AnchorPoint = Vector2.new(0, 0)
+TextButton2.Visible = true
+TextButton2.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TextButton2.BackgroundTransparency = 0
+TextButton2.BorderColor3 = Color3.fromRGB(0, 0, 255)
+TextButton2.BorderSizePixel = 1
+TextButton2.ClipsDescendants = false
+TextButton2.LayoutOrder = 0
+TextButton2.Selectable = true
+TextButton2.SelectionGroup = false
+TextButton2.SizeConstraint = Enum.SizeConstraint.RelativeXY
+TextButton2.Rotation = 0
+TextButton2.AutomaticSize = Enum.AutomaticSize.None
+TextButton2.Font = Enum.Font.Legacy
+TextButton2.Text = "decalspam"
+TextButton2.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton2.TextSize = 8
+TextButton2.TextScaled = false
+TextButton2.TextWrapped = false
+TextButton2.TextXAlignment = Enum.TextXAlignment.Center
+TextButton2.TextYAlignment = Enum.TextYAlignment.Center
+TextButton2.TextTransparency = 0
+TextButton2.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+TextButton2.TextStrokeTransparency = 1
+TextButton2.LineHeight = 1
+TextButton2.RichText = false
+TextButton2.TextTruncate = Enum.TextTruncate.None
+TextButton2.MaxVisibleGraphemes = -1
+TextButton2.Transparency = 0
+TextButton2.Rotation = 0
+TextButton2.Transparency = 0
+TextButton2.MouseButton1Down:connect(function()
+
+local button = script.Parent
+local decalID = 84225092336911
+
+local function applyDecal(part)
+    if part and part:IsA("BasePart") then
+        local existingDecal = part:FindFirstChildOfClass("Decal")
+        if existingDecal then
+            existingDecal:Destroy()
+        end
+        local One = Instance.new("Decal", part)
+        local Two = Instance.new("Decal", part)
+        local Three = Instance.new("Decal", part)
+        local Four = Instance.new("Decal", part)
+        local Five = Instance.new("Decal", part)
+        local Six = Instance.new("Decal", part)
+        One.Texture = "http://www.roblox.com/asset/?id=" .. decalID
+        Two.Texture = "http://www.roblox.com/asset/?id=" .. decalID
+        Three.Texture = "http://www.roblox.com/asset/?id=" .. decalID
+        Four.Texture = "http://www.roblox.com/asset/?id=" .. decalID
+        Five.Texture = "http://www.roblox.com/asset/?id=" .. decalID
+        Six.Texture = "http://www.roblox.com/asset/?id=" .. decalID
+        One.Face = "Front"
+        Two.Face = "Back"
+        Three.Face = "Right"
+        Four.Face = "Left"
+        Five.Face = "Top"
+        Six.Face = "Bottom"
+    end
+end
+
+local function applyDecalsToAll(root)
+    for _, child in pairs(root:GetChildren()) do
+        if child:IsA("BasePart") then
+            applyDecal(child)
+        elseif child:IsA("Model") then
+            applyDecalsToAll(child)
+        end
+    end
+end
+
+button.MouseButton1Click:Connect(function()
+    applyDecalsToAll(workspace)
+end)
+
